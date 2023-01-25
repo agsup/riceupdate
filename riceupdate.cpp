@@ -15,7 +15,7 @@ struct Theme {
         this->bg = bg;
         this->bgSuffix = bgSuffix;
         if (setBg == "unset") {
-            this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '/home/gregs/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
+            this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '~/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
         }
         else {
             this->setBg = setBg;
@@ -30,8 +30,8 @@ struct Theme {
 
 void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
 {
-    ifstream filein("/home/gregs/.config/ricemood/ricemood.temp.ini"); // File to read from
-    ofstream fileout("/home/gregs/.config/ricemood/ricemood.ini");     // Temporary file
+    ifstream filein("~/.config/ricemood/ricemood.temp.ini"); // File to read from
+    ofstream fileout("~/.config/ricemood/ricemood.ini");     // Temporary file
 
     string strTemp;
     while (getline(filein, strTemp))
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
     vector<Theme> themes = {
         {"abby","#007678"},
-        {"abby-bg","#007678","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '/home/gregs/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
+        {"abby-bg","#007678","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '~/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
         {"bulb", "#fffd8a", "#111111", "bulb"},
         {"bowsette","#FFBD94", "#111111"},
         {"delta", "#FF3333","#111111", "delta"},
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
         {"grey", "#525252"},
         {"hot-pink","#FF3377"} ,
         {"lavender", "#bf91ff"} ,
-        {"lavender-bg", "#bf91ff","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '/home/gregs/Downloads/lavender.jpg' --image-bg '#111111'"},
+        {"lavender-bg", "#bf91ff","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '~/Downloads/lavender.jpg' --image-bg '#111111'"},
         {"mint", "#2fd688"},
         {"mocha","#875c3c"},
         {"monkey-dark","#bf6414", "#111111"},
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
         {"peppermint","#FF6666"},
         {"sand","#FFDD99"},
         {"spring-green", "#98FB98"},
-        {"sakura", "#F7C3F5","#565656","fw","feh --no-fehbg --conversion-timeout 5 --bg-center '/home/gregs/Downloads/cherryblossom.jpg' --image-bg '#111111'"},
+        {"sakura", "#F7C3F5","#565656","fw","feh --no-fehbg --conversion-timeout 5 --bg-center '~/Downloads/cherryblossom.jpg' --image-bg '#111111'"},
         {"sky","#5c9aff"},
         {"techniviolet", "#8d5cff","#111111"}
     };
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
     {
         if (string(argv[1]) == "-r")
         {
-            ifstream cur_color_in("/home/gregs/riceupdate/cur_color");
+            ifstream cur_color_in("~/riceupdate/cur_color");
             string cur_color;
             while (getline(cur_color_in, cur_color))
             {
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            ofstream cur_color_rewrite("/home/gregs/riceupdate/cur_color");
+            ofstream cur_color_rewrite("~/riceupdate/cur_color");
             cur_color_rewrite << string(argv[1]);
             cur_color_rewrite.close();
         }
@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
                             bg = argv[2];
                         }
                     }
-                    setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '/home/gregs/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
+                    setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '~/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
                     break;
                 }
             }
@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    string backgroundChangeCommand = "sed -e 's/#000000/" + accent + "/' /home/gregs/background_svg/bg_template_" + bgSuffix + ".svg > /home/gregs/background_svg/bg_colored.svg";
+    string backgroundChangeCommand = "sed -e 's/#000000/" + accent + "/' ~/background_svg/bg_template_" + bgSuffix + ".svg > ~/background_svg/bg_colored.svg";
     string loginChangeFGCommand = "sudo sed -e 's/#00ee00/" + accent + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template.svg > /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg";
     string loginChangeBGCommand = "sudo sed -e 's/#0000ee/" + bg + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg > /usr/share/sddm/themes/sddm-sugar-dark/background.svg";
 
