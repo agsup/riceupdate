@@ -68,6 +68,7 @@ int main(int argc, char* argv[])
 
     vector<Theme> themes = {
         {"abby","#007678"},
+        {"abby-bg","#007678","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '/home/gregs/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
         {"bulb", "#fffd8a", "#111111", "bulb"},
         {"bowsette","#FFBD94", "#111111"},
         {"delta", "#FF3333","#111111", "delta"},
@@ -167,7 +168,7 @@ int main(int argc, char* argv[])
     string loginChangeFGCommand = "sudo sed -e 's/#00ee00/" + accent + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template.svg > /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg";
     string loginChangeBGCommand = "sudo sed -e 's/#0000ee/" + bg + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg > /usr/share/sddm/themes/sddm-sugar-dark/background.svg";
 
-    cout << backgroundChangeCommand << endl;
+    // cout << backgroundChangeCommand << endl;
     system(backgroundChangeCommand.c_str());
     system(loginChangeFGCommand.c_str());
     system(loginChangeBGCommand.c_str());
@@ -208,7 +209,7 @@ int main(int argc, char* argv[])
         textCol = 1;
     }
 
-    cout << bgAvg << endl;
+    // cout << bgAvg << endl;
     if (bgAvg < pbDarknessThreshold)
     {
         bgTextCol = 255;
@@ -242,12 +243,12 @@ int main(int argc, char* argv[])
         }
     }
 
-    cout << setBg << endl;
+    // cout << setBg << endl;
     system(setBg.c_str());
 
     cout << "Replacing PATH link" << endl;
     system("sudo rm /usr/bin/riceupdate");
-    system("sudo ln /home/gregs/riceupdate/riceupdate /usr/bin/riceupdate");
+    system("sudo ln ~/riceupdate/riceupdate /usr/bin/riceupdate");
     return 0;
 }
 
