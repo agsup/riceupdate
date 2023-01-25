@@ -8,6 +8,20 @@
 #include <map>
 using namespace std;
 
+string getHomeDirectory() {
+    system("echo $HOME > homeDirectory");
+
+    ifstream fin("homeDirectory");
+
+    string result;
+
+    fin >> result;
+
+    fin.close();
+
+    return result;
+}
+string homeDirectory = getHomeDirectory();
 struct Theme {
     Theme(string name, string accent, string bg = "#565656", string bgSuffix = "fw", string setBg = "unset") {
         this->name = name;
@@ -15,7 +29,7 @@ struct Theme {
         this->bg = bg;
         this->bgSuffix = bgSuffix;
         if (setBg == "unset") {
-            this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '~/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
+            this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
         }
         else {
             this->setBg = setBg;
@@ -30,8 +44,8 @@ struct Theme {
 
 void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
 {
-    ifstream filein("~/.config/ricemood/ricemood.temp.ini"); // File to read from
-    ofstream fileout("~/.config/ricemood/ricemood.ini");     // Temporary file
+    ifstream filein("" + homeDirectory + "/.config/ricemood/ricemood.temp.ini"); // File to read from
+    ofstream fileout("" + homeDirectory + "/.config/ricemood/ricemood.ini");     // Temporary file
 
     string strTemp;
     while (getline(filein, strTemp))
@@ -47,7 +61,6 @@ void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
         }
         strTemp += "\n";
         fileout << strTemp;
-        // if(found) break;
     }
 }
 
@@ -68,7 +81,7 @@ int main(int argc, char* argv[])
 
     vector<Theme> themes = {
         {"abby","#007678"},
-        {"abby-bg","#007678","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '~/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
+        {"abby-bg","#007678","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
         {"bulb", "#fffd8a", "#111111", "bulb"},
         {"bowsette","#FFBD94", "#111111"},
         {"delta", "#FF3333","#111111", "delta"},
@@ -76,7 +89,7 @@ int main(int argc, char* argv[])
         {"grey", "#525252"},
         {"hot-pink","#FF3377"} ,
         {"lavender", "#bf91ff"} ,
-        {"lavender-bg", "#bf91ff","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '~/Downloads/lavender.jpg' --image-bg '#111111'"},
+        {"lavender-bg", "#bf91ff","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/lavender.jpg' --image-bg '#111111'"},
         {"mint", "#2fd688"},
         {"mocha","#875c3c"},
         {"monkey-dark","#bf6414", "#111111"},
@@ -87,7 +100,7 @@ int main(int argc, char* argv[])
         {"peppermint","#FF6666"},
         {"sand","#FFDD99"},
         {"spring-green", "#98FB98"},
-        {"sakura", "#F7C3F5","#565656","fw","feh --no-fehbg --conversion-timeout 5 --bg-center '~/Downloads/cherryblossom.jpg' --image-bg '#111111'"},
+        {"sakura", "#F7C3F5","#565656","fw","feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/cherryblossom.jpg' --image-bg '#111111'"},
         {"sky","#5c9aff"},
         {"techniviolet", "#8d5cff","#111111"}
     };
@@ -96,7 +109,7 @@ int main(int argc, char* argv[])
     {
         if (string(argv[1]) == "-r")
         {
-            ifstream cur_color_in("~/riceupdate/cur_color");
+            ifstream cur_color_in("" + homeDirectory + "/riceupdate/cur_color");
             string cur_color;
             while (getline(cur_color_in, cur_color))
             {
@@ -107,7 +120,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            ofstream cur_color_rewrite("~/riceupdate/cur_color");
+            ofstream cur_color_rewrite("" + homeDirectory + "/riceupdate/cur_color");
             cur_color_rewrite << string(argv[1]);
             cur_color_rewrite.close();
         }
@@ -152,7 +165,7 @@ int main(int argc, char* argv[])
                             bg = argv[2];
                         }
                     }
-                    setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '~/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
+                    setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
                     break;
                 }
             }
@@ -164,11 +177,10 @@ int main(int argc, char* argv[])
         }
     }
 
-    string backgroundChangeCommand = "sed -e 's/#000000/" + accent + "/' ~/background_svg/bg_template_" + bgSuffix + ".svg > ~/background_svg/bg_colored.svg";
+    string backgroundChangeCommand = "sed -e 's/#000000/" + accent + "/' " + homeDirectory + "/background_svg/bg_template_" + bgSuffix + ".svg > " + homeDirectory + "/background_svg/bg_colored.svg";
     string loginChangeFGCommand = "sudo sed -e 's/#00ee00/" + accent + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template.svg > /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg";
     string loginChangeBGCommand = "sudo sed -e 's/#0000ee/" + bg + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg > /usr/share/sddm/themes/sddm-sugar-dark/background.svg";
 
-    // cout << backgroundChangeCommand << endl;
     system(backgroundChangeCommand.c_str());
     system(loginChangeFGCommand.c_str());
     system(loginChangeBGCommand.c_str());
@@ -229,9 +241,7 @@ int main(int argc, char* argv[])
     system("i3-msg restart > recent_log");
     sleep(1.5);
     system("i3-msg restart > recent_log");
-    // system("i3-msg workspace prev > recent_log");
-    // sleep(1.5);
-    // system("i3-msg workspace next > recent_log");````
+
     system("killall dunst > recent_log");
     string dunstmsg = "notify-send 'Theme Changed!' 'Current Color: " + string(argv[1]) + "'";
     system(dunstmsg.c_str());
@@ -243,12 +253,11 @@ int main(int argc, char* argv[])
         }
     }
 
-    // cout << setBg << endl;
     system(setBg.c_str());
 
     cout << "Replacing PATH link" << endl;
     system("sudo rm /usr/bin/riceupdate");
-    system("sudo ln ~/riceupdate/riceupdate /usr/bin/riceupdate");
+    system(("sudo ln " + homeDirectory + "/riceupdate/riceupdate /usr/bin/riceupdate").c_str());
     return 0;
 }
 
