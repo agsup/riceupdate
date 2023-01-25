@@ -1,0 +1,5 @@
+#!/bin/sh
+
+g++ -g riceupdate.cpp -o riceupdate
+
+./riceupdate lavender
