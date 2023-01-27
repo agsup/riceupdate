@@ -1,5 +1,18 @@
 #!/bin/sh
 
+echo "Compiling Riceupdate:"
 g++ -g riceupdate.cpp -o riceupdate
+echo ""
 
-./riceupdate lavender
+echo "Installing Ricemood (fhadiel):"
+sudo npm install -g ricemood
+echo ""
+
+echo "Installing Feh and Sed via Pacman:"
+sudo pacman -S feh sed
+echo ""
+
+echo "Installed! Riceupdate Presets:"
+echo ""
+
+./riceupdate
