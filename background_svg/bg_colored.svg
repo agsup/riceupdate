@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 31.092893 30.024564"
+   xml:space="preserve"
+   sodipodi:docname="bg_template.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14, custom)"
+   width="435.30051"
+   height="420.3439"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs7"><filter
+     style="color-interpolation-filters:sRGB"
+     inkscape:label="Drop Shadow"
+     id="filter573"
+     x="-0.033071357"
+     y="-0.016804037"
+     width="1.0492696"
+     height="1.0511123"><feFlood
+       flood-opacity="0.305882"
+       flood-color="rgb(14,14,14)"
+       result="flood"
+       id="feFlood563" /><feComposite
+       in="SourceGraphic"
+       in2="flood"
+       operator="in"
+       result="composite1"
+       id="feComposite565" /><feGaussianBlur
+       in="composite1"
+       stdDeviation="0.2"
+       result="blur"
+       id="feGaussianBlur567" /><feOffset
+       dx="-0.5"
+       dy="0.5"
+       result="offset"
+       id="feOffset569" /><feComposite
+       in="SourceGraphic"
+       in2="offset"
+       operator="over"
+       result="composite2"
+       id="feComposite571" /></filter></defs><sodipodi:namedview
+   id="namedview5"
+   pagecolor="#505050"
+   bordercolor="#eeeeee"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#505050"
+   showgrid="false"
+   inkscape:zoom="1.8022803"
+   inkscape:cx="70.466285"
+   inkscape:cy="227.48958"
+   inkscape:window-width="2224"
+   inkscape:window-height="1408"
+   inkscape:window-x="14"
+   inkscape:window-y="78"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<path
+   d="M 29.37422,11.189183 27.18272,9.855226 C 26.134611,9.2835305 25.562915,8.1401391 25.562915,6.9014651 V 4.3288345 c 0,-0.5716957 -0.190565,-1.0481088 -0.666978,-1.3339566 -1.143392,-0.9528266 -2.477348,-1.8103696 -4.00187,-2.38206558 -0.476413,-0.190565 -1.048109,-0.190565 -1.429239,0.09528 l -2.1915,1.33395598 c -1.048109,0.5716961 -2.286783,0.5716961 -3.334892,0 l -2.1915,-1.33395598 c -0.285848,-0.190566 -0.857544,-0.285848 -1.333957,-0.09528 C 8.9837397,1.1845083 7.6497831,2.0420513 6.4111091,2.9948779 6.0299786,3.2807257 5.8394134,3.8524214 5.8394134,4.3288345 v 2.5726306 c 0,1.238674 -0.6669783,2.2867828 -1.6198045,2.9537609 L 2.028109,11.189183 c -0.476413,0.285848 -0.762261,0.762261 -0.857544,1.238674 -0.09528,0.762261 -0.19056496,1.524522 -0.19056496,2.286783 0,0.762261 0.09528,1.619804 0.19056496,2.382065 0.09528,0.476413 0.381131,0.952826 0.857544,1.238674 l 2.1914999,1.333957 c 1.0481088,0.571695 1.6198045,1.715087 1.6198045,2.953761 v 2.572631 c 0,0.571695 0.1905652,1.048108 0.6669783,1.333956 1.1433914,0.952826 2.477348,1.81037 4.0018703,2.382066 0.476413,0.190565 1.048109,0.190565 1.429239,-0.09528 l 2.1915,-1.333957 c 1.048109,-0.571695 2.286783,-0.571695 3.334892,0 l 2.1915,1.333957 c 0.476413,0.285848 0.952826,0.285848 1.429239,0.09528 1.429239,-0.571696 2.763196,-1.333957 4.00187,-2.382066 0.381131,-0.285848 0.666978,-0.857543 0.666978,-1.333956 v -2.572631 c 0,-1.238674 0.666979,-2.286783 1.619805,-2.953761 l 2.1915,-1.333957 c 0.476413,-0.285848 0.762261,-0.762261 0.857544,-1.238674 0.09528,-0.762261 0.190565,-1.524522 0.190565,-2.382065 0,-0.762261 -0.09528,-1.619805 -0.190565,-2.382066 -0.285848,-0.476413 -0.571696,-0.952826 -1.048109,-1.143391 z M 15.653523,23.861771 c -4.859413,0 -8.8612835,-4.097153 -8.8612835,-9.051849 0,-5.0499784 4.0018705,-9.0518483 8.8612835,-9.0518483 4.859414,0 8.861283,4.0971523 8.861283,9.0518483 0,4.954696 -3.906587,9.051849 -8.861283,9.051849 z"
+   id="path2"
+   style="fill:#5c9aff;fill-opacity:1;stroke-width:0.952826;filter:url(#filter573)" />
+</svg>

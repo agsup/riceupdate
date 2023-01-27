@@ -29,7 +29,7 @@ struct Theme {
         this->bg = bg;
         this->bgSuffix = bgSuffix;
         if (setBg == "unset") {
-            this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
+            this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
         }
         else {
             this->setBg = setBg;
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
                             bg = argv[2];
                         }
                     }
-                    setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
+                    setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
                     break;
                 }
             }
@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    string backgroundChangeCommand = "sed -e 's/#000000/" + accent + "/' " + homeDirectory + "/background_svg/bg_template_" + bgSuffix + ".svg > " + homeDirectory + "/background_svg/bg_colored.svg";
+    string backgroundChangeCommand = "sed -e 's/#000000/" + accent + "/' " + homeDirectory + "/riceupdate/background_svg/bg_template_" + bgSuffix + ".svg > " + homeDirectory + "/riceupdate/background_svg/bg_colored.svg";
     string loginChangeFGCommand = "sudo sed -e 's/#00ee00/" + accent + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template.svg > /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg";
     string loginChangeBGCommand = "sudo sed -e 's/#0000ee/" + bg + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg > /usr/share/sddm/themes/sddm-sugar-dark/background.svg";
 
