@@ -20,5 +20,7 @@ mkdir ~/.config/rofi
 mkdir ~/.config/dunst
 :> ${HOME}/.config/dunst/dunstrc
 
+cp launch_polybar.sh ~/launch_polybar.sh
+
 riceupdate lavender
 # :> /usr/share/sddm/themes/sddm-sugar-dark/theme.conf
