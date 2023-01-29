@@ -20,7 +20,7 @@ echo ""
 
 echo ""
 
-cp .fehbg ~/.fehbg
+feh --bg-center placeholder.jpg
 
 cp .config/ricemood ~/.config -r
 
