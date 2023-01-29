@@ -7,6 +7,9 @@ git clone https://github.com/SapuSeven/rofi-presets
 cd rofi-presets
 
 ./setup.sh
+
+cd ..
+
 mkdir ~/.config/alacritty
 :> ${HOME}/.config/alacritty/alacritty.yml
 mkdir ~/.config/polybar
