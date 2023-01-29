@@ -20,4 +20,6 @@ echo ""
 
 echo ""
 
+echo feh --bg-scale ~/riceupdate/placeholder.jpg > ~/.fehbg
+
 echo "If you want to match my personal setup, you'll want to run 'install_optional'"
