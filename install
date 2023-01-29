@@ -22,6 +22,8 @@ echo ""
 
 feh --bg-center placeholder.jpg
 
-cp .config/ricemood ~/.config lavender
+cp .config/ricemood ~/.config
 
 echo "If you want to match my personal setup, you'll want to run 'install_optional'"
+
+./riceupdate lavender
