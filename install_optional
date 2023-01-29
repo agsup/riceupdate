@@ -1,0 +1,11 @@
+#!/bin/sh
+
+yay -S rofi sddm dunst polybar alacritty
+
+git clone https://www.github.com/adi1090x/rofi
+
+cd rofi
+
+./setup.sh
+
+git clone 
