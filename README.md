@@ -9,3 +9,5 @@ NOTE: This project is still heavily in development, and this will likely not wor
 To install, either use the installer file (might need some permission changes), or compile the code, which adds this program to `/usr/bin`.
 
 My config files are included as a point of reference, but might need some tweaking. This will be refined as the project matures.
+
+A font picker/good default is in the works, in the meantime you can find Izayoi Monospaced (my terminal font of choice) to make Alacritty look less broken (it is not included because it is not free/open-source, but is free for personal use).
