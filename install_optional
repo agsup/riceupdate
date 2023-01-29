@@ -4,7 +4,7 @@ yay -S rofi sddm dunst polybar alacritty
 
 git clone https://github.com/SapuSeven/rofi-presets
 
-cd rofi
+cd rofi-presets
 
 ./setup.sh
 mkdir ~/.config/alacritty
