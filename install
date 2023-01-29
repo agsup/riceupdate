@@ -22,7 +22,7 @@ echo ""
 
 feh --bg-center placeholder.jpg
 
-cp .config/ricemood ~/.config
+cp .config/ricemood ~/.config -r
 
 echo "If you want to match my personal setup, you'll want to run 'install_optional'"
 
