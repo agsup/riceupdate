@@ -1,6 +1,6 @@
 #!/bin/sh
 
-yay -S rofi sddm dunst polybar alacritty
+yay -S rofi sddm dunst polybar alacritty picom-jonaburg-fix
 
 git clone https://github.com/SapuSeven/rofi-presets
 
