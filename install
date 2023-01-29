@@ -20,7 +20,7 @@ echo ""
 
 echo ""
 
-echo feh --bg-scale ~/riceupdate/placeholder.jpg > ~/.fehbg
+cp .fehbg ~/.fehbg
 
 cp .config/ricemood ~/.config -r
 
