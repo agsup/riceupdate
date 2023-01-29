@@ -21,6 +21,8 @@ mkdir ~/.config/dunst
 :> ${HOME}/.config/dunst/dunstrc
 
 cp launch_polybar.sh ~
+mkdir ~/.config/picom
+cp picom.conf ~/.config/picom
 
 riceupdate lavender
 # :> /usr/share/sddm/themes/sddm-sugar-dark/theme.conf
