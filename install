@@ -10,10 +10,14 @@ echo ""
 
 echo "Installing Ricemood (fhadiel):"
 sudo npm install -g ricemood
+echo "NOTE: IF YOU USE THE INCLUDED DOT FILES, COMMENT OUT THE SECTIONS OF THE CONFIG YOU DON'T NEED!"
 echo ""
-
 
 echo "Installed! Riceupdate Presets:"
 echo ""
 
 ./riceupdate
+
+echo ""
+
+echo "If you want to match my personal setup, you'll want to run 'install_optional'"
