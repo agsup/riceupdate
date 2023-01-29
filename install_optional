@@ -10,13 +10,13 @@ cd rofi
 
 git clone 
 
-touch ${HOME}/.config/alacritty/alacritty.yml
-touch ${HOME}/.config/polybar/config.ini
-touch ${HOME}/.config/rofi/launchers/colorful/launcher.sh
-touch ${HOME}/.config/rofi/launchers/colorful/launcherFull.sh
-touch ${HOME}/.config/i3/config
-touch ${HOME}/.config/rofi/powermenu/styles/bluish.rasi
-touch ${HOME}/.config/dunst/dunstrc
+:> ${HOME}/.config/alacritty/alacritty.yml
+:> ${HOME}/.config/polybar/config.ini
+:> ${HOME}/.config/rofi/launchers/colorful/launcher.sh
+:> ${HOME}/.config/rofi/launchers/colorful/launcherFull.sh
+:> ${HOME}/.config/i3/config
+:> ${HOME}/.config/rofi/powermenu/styles/bluish.rasi
+:> ${HOME}/.config/dunst/dunstrc
 
 riceupdate lavender
-# touch /usr/share/sddm/themes/sddm-sugar-dark/theme.conf
+# :> /usr/share/sddm/themes/sddm-sugar-dark/theme.conf
