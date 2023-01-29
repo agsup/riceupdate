@@ -22,4 +22,6 @@ echo ""
 
 echo feh --bg-scale ~/riceupdate/placeholder.jpg > ~/.fehbg
 
+cp .config/ricemood ~/.config -r
+
 echo "If you want to match my personal setup, you'll want to run 'install_optional'"
