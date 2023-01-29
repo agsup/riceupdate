@@ -7,15 +7,17 @@ git clone https://www.github.com/adi1090x/rofi
 cd rofi
 
 ./setup.sh
-
-git clone 
-
+mkdir ~/.config/alacritty
 :> ${HOME}/.config/alacritty/alacritty.yml
+mkdir ~/.config/polybar
 :> ${HOME}/.config/polybar/config.ini
 :> ${HOME}/.config/rofi/launchers/colorful/launcher.sh
 :> ${HOME}/.config/rofi/launchers/colorful/launcherFull.sh
+mkdir ~/.config/i3
 :> ${HOME}/.config/i3/config
+mkdir ~/.config/rofi
 :> ${HOME}/.config/rofi/powermenu/styles/bluish.rasi
+mkdir ~/.config/dunst
 :> ${HOME}/.config/dunst/dunstrc
 
 riceupdate lavender
