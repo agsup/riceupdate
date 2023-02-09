@@ -11,3 +11,7 @@ To install, either use the installer file (might need some permission changes), 
 My config files are included as a point of reference, but might need some tweaking. This will be refined as the project matures.
 
 A font picker/good default is in the works, in the meantime you can find Izayoi Monospaced (my terminal font of choice) to make Alacritty look less broken (it is not included because it is not free/open-source, but is free for personal use).
+
+Programs supported for theming:
+- Anything that ricemood supports (anything with a basic text file based config)
+- GTK3/4 through Gradience
