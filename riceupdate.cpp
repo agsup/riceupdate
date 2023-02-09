@@ -325,14 +325,13 @@ int main(int argc, char* argv[])
         }
     }
 
-    cout << selectedTheme.setBgCommand << endl;
     system(selectedTheme.setBgCommand.c_str());
 
-    cout << "Replacing PATH link" << endl;
+    cout << endl << "Replacing PATH link" << endl;
     system("sudo rm /usr/bin/riceupdate");
     system(("sudo ln " + homeDirectory + "/riceupdate/riceupdate /usr/bin/riceupdate").c_str());
 
-    cout << "Running Gradience" << endl;
+    cout << endl << "Running Gradience" << endl;
     system((string("gradience-cli monet -p ~/background.svg -n Monet --theme ") + (selectedTheme.isDark ? "dark" : "light")).c_str());
     system("gradience-cli apply -n Monet --gtk both");
 
