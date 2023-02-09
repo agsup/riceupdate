@@ -91,7 +91,7 @@ void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
         for (int i = 0; i < toReplace.size();i++) {
 
             string substring = strTemp.substr(0, toReplace[i].length());
-            // cout << substring << endl;
+
             if (substring == toReplace[i])
             {
                 strTemp = replacement[i];
@@ -103,7 +103,7 @@ void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
 }
 
 void classifyThemeFile(vector<Theme>& themes) {
-    ifstream filein("themes.conf"); // File to read from
+    ifstream filein(homeDirectory + "/riceupdate/themes.conf"); // File to read from
     string curLine;
     Theme* curTheme;
     while (getline(filein, curLine)) {
@@ -155,20 +155,18 @@ void classifyThemeFile(vector<Theme>& themes) {
             curTheme->setBgCommand = trim_copy((trim_copy(curLine.substr(11))).substr(1));
     }
     for (Theme& theme : themes) {
-        if (theme.bgSuffix == "unset" && theme.bgDirectory == "unset") {
-            theme.bgSuffix = "fw";
-        }
+        theme.bg = theme.isDark ? "#111111" : "#565656";
 
         if (theme.setBgCommand == "unset") {
-            if (theme.bgSuffix == "unset")
-                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_template_" + theme.bgDirectory + ".svg' --image-bg '#111111'";
-            else if ((theme.bgDirectory == "unset"))
-                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_template_" + theme.bgSuffix + ".svg' --image-bg '#111111'";
-        }
-        else {
+            if (theme.bgSuffix == "unset" && theme.bgDirectory != "unset")
+                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + theme.bgDirectory + "' --image-bg '" + theme.bg + "'";
+
+            else
+                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + theme.bg + "'";
 
         }
-        theme.bg = theme.isDark ? "#111111" : "#565656";
+
+        theme.bgSuffix = (theme.bgSuffix == "unset" ? "fw" : theme.bgSuffix);
     }
 }
 
@@ -252,6 +250,7 @@ int main(int argc, char* argv[])
     }
 
     string backgroundChangeCommand = "sed -e 's/#000000/" + selectedTheme.accent + "/' " + homeDirectory + "/riceupdate/background_svg/bg_template_" + selectedTheme.bgSuffix + ".svg > " + homeDirectory + "/riceupdate/background_svg/bg_colored.svg";
+
     string loginChangeFGCommand = "sudo sed -e 's/#00ee00/" + selectedTheme.accent + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template.svg > /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg";
     string loginChangeBGCommand = "sudo sed -e 's/#0000ee/" + selectedTheme.bg + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg > /usr/share/sddm/themes/sddm-sugar-dark/background.svg";
 
@@ -285,7 +284,7 @@ int main(int argc, char* argv[])
 
     int darknessThreshold = 170;
     int pbDarknessThreshold = 80;
-    // cout << rgbAvg << endl;
+
     if (rgbAvg < darknessThreshold)
     {
         textCol = 255;
@@ -295,7 +294,6 @@ int main(int argc, char* argv[])
         textCol = 1;
     }
 
-    // cout << bgAvg << endl;
     if (bgAvg < pbDarknessThreshold)
     {
         bgTextCol = 255;
@@ -319,7 +317,7 @@ int main(int argc, char* argv[])
     system("killall dunst > recent_log");
     string dunstmsg = "notify-send 'Theme Changed!' 'Current Color: " + string(argv[1]) + "'";
     system(dunstmsg.c_str());
-    // cout << "done" << endl;
+
     if (argc > 3) {
         cout << argv[2] << endl;
         if (argv[2] == (string)"--bg") {
