@@ -23,23 +23,26 @@ string getHomeDirectory() {
 }
 string homeDirectory = getHomeDirectory();
 struct Theme {
-    Theme(string name, string accent, string bg = "#565656", string bgSuffix = "fw", string setBg = "unset") {
+    Theme(string name, string accent, bool isDark = false, string bgSuffix = "fw", string setBg = "unset") {
         this->name = name;
         this->accent = accent;
-        this->bg = bg;
         this->bgSuffix = bgSuffix;
-        if (setBg == "unset") {
+        this->isDark = isDark;
+        this->bg = isDark ? "#111111" : "#565656";
+        this->setBg = setBg;
+        if (this->setBg == "unset") {
             this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
         }
-        else {
-            this->setBg = setBg;
-        }
     }
+
+    Theme() {}; // Todo: Define defaults
+
     string name;
     string accent;
-    string bg;
     string bgSuffix;
     string setBg;
+    string bg;
+    bool isDark;
 };
 
 void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
@@ -75,34 +78,33 @@ int hex2dec(string s)
 
 int main(int argc, char* argv[])
 {
-    string accent, bg, bgSuffix, setBg;
-    bgSuffix = "fw";
+    Theme selectedTheme;
     string argv1Placeholder = "";
 
     vector<Theme> themes = {
         {"abby","#007678"},
-        {"abby-bg","#007678","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
-        {"bulb", "#fffd8a", "#111111", "bulb"},
-        {"bowsette","#FFBD94", "#111111"},
-        {"delta", "#FF3333","#111111", "delta"},
-        {"glowstick", "#05eb7f", "#111111"},
+        {"abby-bg","#007678",false,"fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
+        {"bulb", "#fffd8a", true, "bulb"},
+        {"bowsette","#FFBD94", true},
+        {"delta", "#FF3333",true, "delta"},
+        {"glowstick", "#05eb7f", true},
         {"grey", "#525252"},
         {"hot-pink","#FF3377"} ,
         {"lavender", "#bf91ff"} ,
-        {"lavender-bg", "#bf91ff","#565656","fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/lavender.jpg' --image-bg '#111111'"},
+        {"lavender-bg", "#bf91ff",false,"fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/lavender.jpg' --image-bg '#111111'"},
         {"mint", "#2fd688"},
         {"mocha","#875c3c"},
-        {"monkey-dark","#bf6414", "#111111"},
+        {"monkey-dark","#bf6414", true},
         {"monkey-light","#914e31"},
         {"peach", "#FFBD94"},
         {"periwinkle", "#CCCCFF"},
-        {"perilwinkle", "#CCCCFF", "#111111"},
+        {"perilwinkle", "#CCCCFF", true},
         {"peppermint","#FF6666"},
         {"sand","#FFDD99"},
         {"spring-green", "#98FB98"},
-        {"sakura", "#F7C3F5","#565656","fw","feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/cherryblossom.jpg' --image-bg '#111111'"},
+        {"sakura", "#F7C3F5",false,"fw","feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/cherryblossom.jpg' --image-bg '#111111'"},
         {"sky","#5c9aff"},
-        {"techniviolet", "#8d5cff","#111111"}
+        {"techniviolet", "#8d5cff",true}
     };
 
     if (argc > 1)
@@ -132,12 +134,6 @@ int main(int argc, char* argv[])
         }
         return 0;
     }
-    if (argc != 3) {
-        bg = "#565656";
-    }
-    else {
-        bg = string(argv[2]);
-    }
     if (argc > 1) {
         if (string(argv[1]) == "--help") {
             for (Theme theme : themes) {
@@ -149,23 +145,20 @@ int main(int argc, char* argv[])
             bool isColorSet = false;
             for (Theme theme : themes) {
                 if (string(argv[1]) == theme.name || argv1Placeholder == theme.name) {
-                    accent = theme.accent;
-                    bg = theme.bg;
-                    bgSuffix = theme.bgSuffix;
-                    setBg = theme.setBg;
+                    selectedTheme = theme;
                     isColorSet = true;
                     break;
                 }
                 else if (char(argv[1][0]) == '#' || argv1Placeholder[0] == '#')
                 {
-                    accent = argv[1];
+                    selectedTheme.accent = argv[1];
                     isColorSet = true;
                     if (argc < 1) {
                         if (char(argv[2][0]) == '#') {
-                            bg = argv[2];
+                            selectedTheme.bg = argv[2];
                         }
                     }
-                    setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
+                    selectedTheme.setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + selectedTheme.bg + "'";
                     break;
                 }
             }
@@ -177,20 +170,20 @@ int main(int argc, char* argv[])
         }
     }
 
-    string backgroundChangeCommand = "sed -e 's/#000000/" + accent + "/' " + homeDirectory + "/riceupdate/background_svg/bg_template_" + bgSuffix + ".svg > " + homeDirectory + "/riceupdate/background_svg/bg_colored.svg";
-    string loginChangeFGCommand = "sudo sed -e 's/#00ee00/" + accent + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template.svg > /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg";
-    string loginChangeBGCommand = "sudo sed -e 's/#0000ee/" + bg + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg > /usr/share/sddm/themes/sddm-sugar-dark/background.svg";
+    string backgroundChangeCommand = "sed -e 's/#000000/" + selectedTheme.accent + "/' " + homeDirectory + "/riceupdate/background_svg/bg_template_" + selectedTheme.bgSuffix + ".svg > " + homeDirectory + "/riceupdate/background_svg/bg_colored.svg";
+    string loginChangeFGCommand = "sudo sed -e 's/#00ee00/" + selectedTheme.accent + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template.svg > /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg";
+    string loginChangeBGCommand = "sudo sed -e 's/#0000ee/" + selectedTheme.bg + "/' /usr/share/sddm/themes/sddm-sugar-dark/background_template1.svg > /usr/share/sddm/themes/sddm-sugar-dark/background.svg";
 
     system(backgroundChangeCommand.c_str());
     system(loginChangeFGCommand.c_str());
     system(loginChangeBGCommand.c_str());
 
-    int accRed = hex2dec(accent.substr(1, 2));
-    int accBlue = hex2dec(accent.substr(3, 2));
-    int accGreen = hex2dec(accent.substr(5, 2));
-    int bgRed = hex2dec(bg.substr(1, 2));
-    int bgBlue = hex2dec(bg.substr(3, 2));
-    int bgGreen = hex2dec(bg.substr(5, 2));
+    int accRed = hex2dec(selectedTheme.accent.substr(1, 2));
+    int accBlue = hex2dec(selectedTheme.accent.substr(3, 2));
+    int accGreen = hex2dec(selectedTheme.accent.substr(5, 2));
+    int bgRed = hex2dec(selectedTheme.bg.substr(1, 2));
+    int bgBlue = hex2dec(selectedTheme.bg.substr(3, 2));
+    int bgGreen = hex2dec(selectedTheme.bg.substr(5, 2));
     int rgbAvg = (accRed + accBlue + accGreen) / 3;
     int bgAvg = (bgRed + bgBlue + bgGreen) / 3;
     int textCol = 255;
@@ -249,15 +242,21 @@ int main(int argc, char* argv[])
     if (argc > 3) {
         cout << argv[2] << endl;
         if (argv[2] == (string)"--bg") {
-            setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center " + (string)"'" + argv[3] + "'" + " --image-bg '#111111'";
+            selectedTheme.setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center " + (string)"'" + argv[3] + "'" + " --image-bg '#111111'";
         }
     }
 
-    system(setBg.c_str());
+    cout << selectedTheme.setBg << endl;
+    system(selectedTheme.setBg.c_str());
 
     cout << "Replacing PATH link" << endl;
     system("sudo rm /usr/bin/riceupdate");
     system(("sudo ln " + homeDirectory + "/riceupdate/riceupdate /usr/bin/riceupdate").c_str());
+
+    cout << "Running Gradience" << endl;
+    system((string("gradience-cli monet -p ~/background.svg -n Monet --theme ") + (selectedTheme.isDark ? "dark" : "light")).c_str());
+    system("gradience-cli apply -n Monet --gtk both");
+
     return 0;
 }
 
