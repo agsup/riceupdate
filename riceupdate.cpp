@@ -5,8 +5,54 @@
 #include <unistd.h>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <cctype>
 #include <map>
+#include <ranges>
 using namespace std;
+
+using std::cout;
+using std::system;
+
+// Thanks to https://stackoverflow.com/a/44973498/524503 for these trim functions!
+
+// trim from start (in place)
+static inline void ltrim(std::string& s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string& s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }).base(), s.end());
+}
+
+// trim from both ends (in place)
+static inline void trim(std::string& s) {
+    rtrim(s);
+    ltrim(s);
+}
+
+// trim from start (copying)
+static inline std::string ltrim_copy(std::string s) {
+    ltrim(s);
+    return s;
+}
+
+// trim from end (copying)
+static inline std::string rtrim_copy(std::string s) {
+    rtrim(s);
+    return s;
+}
+
+// trim from both ends (copying)
+static inline std::string trim_copy(std::string s) {
+    trim(s);
+    return s;
+}
 
 string getHomeDirectory() {
     system("echo $HOME > homeDirectory");
@@ -22,27 +68,16 @@ string getHomeDirectory() {
     return result;
 }
 string homeDirectory = getHomeDirectory();
+
 struct Theme {
-    Theme(string name, string accent, bool isDark = false, string bgSuffix = "fw", string setBg = "unset") {
-        this->name = name;
-        this->accent = accent;
-        this->bgSuffix = bgSuffix;
-        this->isDark = isDark;
-        this->bg = isDark ? "#111111" : "#565656";
-        this->setBg = setBg;
-        if (this->setBg == "unset") {
-            this->setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + bg + "'";
-        }
-    }
-
-    Theme() {}; // Todo: Define defaults
-
     string name;
     string accent;
-    string bgSuffix;
-    string setBg;
+    string bgSuffix = "unset";
+    string bgDirectory = "unset";
+    bool isDark = false;
     string bg;
-    bool isDark;
+    void setbg(string bg) { this->bg = bg; };
+    string setBgCommand = "unset";
 };
 
 void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
@@ -67,6 +102,76 @@ void fileReplaceAt(vector<string> toReplace, vector<string> replacement)
     }
 }
 
+void classifyThemeFile(vector<Theme>& themes) {
+    ifstream filein("themes.conf"); // File to read from
+    string curLine;
+    Theme* curTheme;
+    while (getline(filein, curLine)) {
+        trim(curLine);
+        for (int x = 0; x < curLine.size(); ++x) {
+            if (curLine[x] == ';') {
+                curLine = curLine.substr(0, x);
+                break;
+            }
+        }
+
+        if (curLine.substr(0, 10) == "[template]") {
+            do {
+                getline(filein, curLine);
+            } while (curLine != "" && curLine[0] != '[');
+        }
+
+        if (curLine[0] == '[') {
+            themes.push_back(Theme());
+            curTheme = &themes[themes.size() - 1];
+            curTheme->name = (curLine.substr(1));
+            for (int x = 0; x < curTheme->name.size(); ++x) {
+                if (curTheme->name[x] == ']') {
+                    curTheme->name = curTheme->name.substr(0, x);
+                    break;
+                }
+            }
+        }
+
+        if (curLine.substr(0, 6) == "accent")
+            curTheme->accent = trim_copy((trim_copy(curLine.substr(6))).substr(1));
+
+        if (curLine.substr(0, 8) == "bgSuffix")
+            curTheme->bgSuffix = trim_copy((trim_copy(curLine.substr(8))).substr(1));
+
+        if (ltrim_copy(curLine).substr(0, 11) == "bgDirectory") {
+            curTheme->bgDirectory = trim_copy((trim_copy(curLine.substr(11))).substr(1));
+
+            if (curTheme->bgDirectory[0] == '~') {
+                curTheme->bgDirectory = homeDirectory + curTheme->bgDirectory.substr(1);
+            }
+        }
+
+
+        if (ltrim_copy(curLine).substr(0, 6) == "isDark")
+            curTheme->isDark = true; // default case is false
+
+        if (ltrim_copy(curLine).substr(0, 12) == "setBgCommand")
+            curTheme->setBgCommand = trim_copy((trim_copy(curLine.substr(11))).substr(1));
+    }
+    for (Theme& theme : themes) {
+        if (theme.bgSuffix == "unset" && theme.bgDirectory == "unset") {
+            theme.bgSuffix = "fw";
+        }
+
+        if (theme.setBgCommand == "unset") {
+            if (theme.bgSuffix == "unset")
+                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_template_" + theme.bgDirectory + ".svg' --image-bg '#111111'";
+            else if ((theme.bgDirectory == "unset"))
+                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/background_svg/bg_template_" + theme.bgSuffix + ".svg' --image-bg '#111111'";
+        }
+        else {
+
+        }
+        theme.bg = theme.isDark ? "#111111" : "#565656";
+    }
+}
+
 int hex2dec(string s)
 {
     unsigned int i;
@@ -80,38 +185,14 @@ int main(int argc, char* argv[])
 {
     Theme selectedTheme;
     string argv1Placeholder = "";
-
-    vector<Theme> themes = {
-        {"abby","#007678"},
-        {"abby-bg","#007678",false,"fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/hydrangeas.jpg' --image-bg '#111111'"},
-        {"bulb", "#fffd8a", true, "bulb"},
-        {"bowsette","#FFBD94", true},
-        {"delta", "#FF3333",true, "delta"},
-        {"glowstick", "#05eb7f", true},
-        {"grey", "#525252"},
-        {"hot-pink","#FF3377"} ,
-        {"lavender", "#bf91ff"} ,
-        {"lavender-bg", "#bf91ff",false,"fw","feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/lavender.jpg' --image-bg '#111111'"},
-        {"mint", "#2fd688"},
-        {"mocha","#875c3c"},
-        {"monkey-dark","#bf6414", true},
-        {"monkey-light","#914e31"},
-        {"peach", "#FFBD94"},
-        {"periwinkle", "#CCCCFF"},
-        {"perilwinkle", "#CCCCFF", true},
-        {"peppermint","#FF6666"},
-        {"sand","#FFDD99"},
-        {"spring-green", "#98FB98"},
-        {"sakura", "#F7C3F5",false,"fw","feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/Downloads/cherryblossom.jpg' --image-bg '#111111'"},
-        {"sky","#5c9aff"},
-        {"techniviolet", "#8d5cff",true}
-    };
+    vector<Theme> themes;
+    classifyThemeFile(themes);
 
     if (argc > 1)
     {
         if (string(argv[1]) == "-r")
         {
-            ifstream cur_color_in("" + homeDirectory + "/riceupdate/cur_color");
+            ifstream cur_color_in(homeDirectory + "/riceupdate/cur_color");
             string cur_color;
             while (getline(cur_color_in, cur_color))
             {
@@ -122,7 +203,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            ofstream cur_color_rewrite("" + homeDirectory + "/riceupdate/cur_color");
+            ofstream cur_color_rewrite(homeDirectory + "/riceupdate/cur_color");
             cur_color_rewrite << string(argv[1]);
             cur_color_rewrite.close();
         }
@@ -158,7 +239,7 @@ int main(int argc, char* argv[])
                             selectedTheme.bg = argv[2];
                         }
                     }
-                    selectedTheme.setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + selectedTheme.bg + "'";
+                    selectedTheme.setBgCommand = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + selectedTheme.bg + "'";
                     break;
                 }
             }
@@ -242,12 +323,12 @@ int main(int argc, char* argv[])
     if (argc > 3) {
         cout << argv[2] << endl;
         if (argv[2] == (string)"--bg") {
-            selectedTheme.setBg = "feh --no-fehbg --conversion-timeout 5 --bg-center " + (string)"'" + argv[3] + "'" + " --image-bg '#111111'";
+            selectedTheme.setBgCommand = "feh --no-fehbg --conversion-timeout 5 --bg-center " + (string)"'" + argv[3] + "'" + " --image-bg '#111111'";
         }
     }
 
-    cout << selectedTheme.setBg << endl;
-    system(selectedTheme.setBg.c_str());
+    cout << selectedTheme.setBgCommand << endl;
+    system(selectedTheme.setBgCommand.c_str());
 
     cout << "Replacing PATH link" << endl;
     system("sudo rm /usr/bin/riceupdate");
