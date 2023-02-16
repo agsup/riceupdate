@@ -159,7 +159,7 @@ void classifyThemeFile(vector<Theme>& themes) {
 
         if (theme.setBgCommand == "unset") {
             if (theme.bgSuffix == "unset" && theme.bgDirectory != "unset")
-                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + theme.bgDirectory + "' --image-bg '" + theme.bg + "'";
+                theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-fill '" + theme.bgDirectory + "' --image-bg '" + theme.bg + "'";
 
             else
                 theme.setBgCommand = "feh --no-fehbg --zoom max --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + theme.bg + "'";
@@ -186,63 +186,62 @@ int main(int argc, char* argv[])
     vector<Theme> themes;
     classifyThemeFile(themes);
 
-    if (argc > 1)
-    {
-        if (string(argv[1]) == "-r")
-        {
+    if (argc > 1) {
+        if (string(argv[1]) == "-r") {
             ifstream cur_color_in(homeDirectory + "/riceupdate/cur_color");
             string cur_color;
-            while (getline(cur_color_in, cur_color))
-            {
-                argv1Placeholder = cur_color;
-            }
+            getline(cur_color_in, cur_color);
+
+            argv1Placeholder = cur_color;
+
             cout << "Previous color: " << argv1Placeholder << endl;
             cur_color_in.close();
         }
-        else
-        {
-            ofstream cur_color_rewrite(homeDirectory + "/riceupdate/cur_color");
-            cur_color_rewrite << string(argv[1]);
-            cur_color_rewrite.close();
+        else {
+            argv1Placeholder = argv[1];
         }
     }
-    if (argc == 1)
-    {
-        for (Theme theme : themes) {
+    if (argc == 1) {
+        for (Theme theme : themes)
             cout << theme.name << endl;
-        }
+
         return 0;
     }
     if (argc > 1) {
         if (string(argv[1]) == "--help") {
-            for (Theme theme : themes) {
+            for (Theme theme : themes)
                 cout << theme.name << endl;
-            }
+
             return 0;
         }
         else {
             bool isColorSet = false;
             for (Theme theme : themes) {
-                if (string(argv[1]) == theme.name || argv1Placeholder == theme.name) {
+                if (argv1Placeholder == theme.name) {
                     selectedTheme = theme;
                     isColorSet = true;
+
+                    if (argv1Placeholder != "-r") {
+                        ofstream cur_color_rewrite(homeDirectory + "/riceupdate/cur_color");
+                        cur_color_rewrite << argv1Placeholder;
+                        cur_color_rewrite.close();
+                    }
+
                     break;
                 }
-                else if (char(argv[1][0]) == '#' || argv1Placeholder[0] == '#')
-                {
+                else if (argv1Placeholder[0] == '#') {
                     selectedTheme.accent = argv[1];
                     isColorSet = true;
-                    if (argc < 1) {
-                        if (char(argv[2][0]) == '#') {
+
+                    if (argc < 1)
+                        if (char(argv[2][0]) == '#')
                             selectedTheme.bg = argv[2];
-                        }
-                    }
+
                     selectedTheme.setBgCommand = "feh --no-fehbg --conversion-timeout 5 --bg-center '" + homeDirectory + "/riceupdate/background_svg/bg_colored.svg' --image-bg '" + selectedTheme.bg + "'";
                     break;
                 }
             }
             if (!isColorSet) {
-                cout << argv[1][0] << endl;
                 cout << "enter a valid color" << endl;
                 return 0;
             }
@@ -270,38 +269,27 @@ int main(int argc, char* argv[])
     int bgTextCol = 0;
 
     if (accRed <= 0)
-    {
         accRed = 1;
-    }
+
     if (accBlue <= 0)
-    {
         accBlue = 1;
-    }
+
     if (accGreen <= 0)
-    {
         accGreen = 1;
-    }
+
 
     int darknessThreshold = 170;
     int pbDarknessThreshold = 80;
 
     if (rgbAvg < darknessThreshold)
-    {
         textCol = 255;
-    }
     else
-    {
         textCol = 1;
-    }
 
     if (bgAvg < pbDarknessThreshold)
-    {
         bgTextCol = 255;
-    }
     else
-    {
         bgTextCol = 1;
-    }
 
     string accentFormatted = "accent1 = '@V>r(" + to_string(accRed) + ")>g(" + to_string(accBlue) + ")>b(" + to_string(accGreen) + ")'";
     string textColor = "textCol = '@V>r(" + to_string(textCol) + ")>g(" + to_string(textCol) + ")>b(" + to_string(textCol) + ")'";
@@ -325,6 +313,7 @@ int main(int argc, char* argv[])
         }
     }
 
+    cout << selectedTheme.setBgCommand << endl;
     system(selectedTheme.setBgCommand.c_str());
 
     cout << endl << "Replacing PATH link" << endl;
